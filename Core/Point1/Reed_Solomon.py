@@ -2,7 +2,7 @@ import math
 import sympy as sp
 from itertools import product
 
-# ── Aritmética en GF(q) ───────────────────────────────────────────────────────
+# Aritmética en GF(q)
 
 def es_primo(n):
     if n < 2: return False

@@ -58,14 +58,15 @@ public class MainViewModel : BaseViewModel
     private static readonly HttpClient _http = new();
     private CancellationTokenSource? _cts;
 
+    // Punto 1
     // Inputs
     private string _inputN = "5";
     public string InputN { get => _inputN; set { SetField(ref _inputN, value); ValidateInputs(); } }
 
-    private string _inputK = "2";
+    private string _inputK = "3";
     public string InputK { get => _inputK; set { SetField(ref _inputK, value); ValidateInputs(); } }
 
-    private string _inputQ = "7";
+    private string _inputQ = "5";
     public string InputQ { get => _inputQ; set { SetField(ref _inputQ, value); ValidateInputs(); } }
 
     // Validacion
@@ -79,9 +80,9 @@ public class MainViewModel : BaseViewModel
     public bool ExceedsLimit { get => _exceedsLimit; set => SetField(ref _exceedsLimit, value); }
 
     // Estado
-    private bool _isCalculating;
-    public bool IsCalculating { get => _isCalculating; set { SetField(ref _isCalculating, value); OnPropertyChanged(nameof(IsIdle)); } }
-    public bool IsIdle => !_isCalculating;
+    private bool _isCalculatingP1;
+    public bool IsCalculatingP1 { get => _isCalculatingP1; set { SetField(ref _isCalculatingP1, value); OnPropertyChanged(nameof(IsIdleP1)); } }
+    public bool IsIdleP1 => !_isCalculatingP1;
 
     private bool _showResults;
     public bool ShowResults { get => _showResults; set => SetField(ref _showResults, value); }
@@ -120,20 +121,48 @@ public class MainViewModel : BaseViewModel
     public ObservableCollection<CodewordRow> CodewordRows { get; } = new();
     public ObservableCollection<PolynomialRow> PolynomialRows { get; } = new();
 
+    // Punto 2
+    private bool _showP2Results;
+    public bool ShowP2Results { get => _showP2Results; set => SetField(ref _showP2Results, value); }
+
+    private bool _isCalculatingP2;
+    public bool IsCalculatingP2 { get => _isCalculatingP2; set { SetField(ref _isCalculatingP2, value); OnPropertyChanged(nameof(IsIdleP2)); } }
+    public bool IsIdleP2 => !_isCalculatingP2;
+
+    private string _computeTimeTextP2 = string.Empty;
+    public string ComputeTimeTextP2 { get => _computeTimeTextP2; set => SetField(ref _computeTimeTextP2, value); }
+
+    private string _mensajeDual = string.Empty;
+    public string MensajeDual { get => _mensajeDual; set => SetField(ref _mensajeDual, value); }
+
+    private bool _esAutoDual;
+    public bool EsAutoDual { get => _esAutoDual; set => SetField(ref _esAutoDual, value); }
+
+    public ObservableCollection<MatrixRow> MatrizGOriginalRows { get; } = new();
+    public ObservableCollection<MatrixRow> MatrizFormaEstandarRows { get; } = new();
+    public ObservableCollection<MatrixRow> MatrizHRows { get; } = new();
+    public ObservableCollection<MatrixRow> MatrizEquivalenteRows { get; } = new();
+    public ObservableCollection<MatrixRow> MatrizExtensionRows { get; } = new();
+    public ObservableCollection<MatrixRow> MatrizPerforacionRows { get; } = new();
+    public ObservableCollection<MatrixRow> MatrizReduccionRows { get; } = new();
+    public ObservableCollection<CodewordRow> CodewordsOriginalRows { get; } = new();
+    public ObservableCollection<CodewordRow> CodewordsEquivalenteRows { get; } = new();
 
     // Comandos
-    public RelayCommand CalculateCommand { get; }
+    public RelayCommand CalculateP1Command { get; }
     public RelayCommand CancelCommand { get; }
-    public RelayCommand ToggleThemeCommand { get; } 
+    public RelayCommand ToggleThemeCommand { get; }
+    public RelayCommand CalculateP2Command { get; }
 
     private readonly ThemeService _themeService;
 
     public MainViewModel(ThemeService themeService)
     {
         _themeService = themeService;
-        CalculateCommand = new RelayCommand(_ => _ = CalculateAsync(), _ => IsIdle && !HasValidationError);
-        CancelCommand = new RelayCommand(_ => _cts?.Cancel(), _ => IsCalculating);
+        CalculateP1Command = new RelayCommand(_ => _ = CalculateP1Async(), _ => IsIdleP1 && !HasValidationError);
+        CancelCommand = new RelayCommand(_ => _cts?.Cancel(), _ => IsCalculatingP1);
         ToggleThemeCommand = new RelayCommand(_ => _themeService.Toggle());
+        CalculateP2Command = new RelayCommand(_ => _ = CalculateP2Async(), _ => IsIdleP2);
 
         NavPoint1Command = new RelayCommand(_ => ActivePoint = 1);
         NavPoint2Command = new RelayCommand(_ => ActivePoint = 2);
@@ -170,10 +199,10 @@ public class MainViewModel : BaseViewModel
     }
 
     // Calculos
-    private async Task CalculateAsync()
+    private async Task CalculateP1Async()
     {
         _cts = new CancellationTokenSource();
-        IsCalculating = true;
+        IsCalculatingP1 = true;
         ShowResults = false;
 
         int n = int.Parse(InputN);
@@ -196,7 +225,7 @@ public class MainViewModel : BaseViewModel
         finally
         {
             sw.Stop();
-            IsCalculating = false;
+            IsCalculatingP1 = false;
         }
 
         if (result != null)
@@ -205,6 +234,86 @@ public class MainViewModel : BaseViewModel
             PopulateResults(result);
             ShowResults = true;
         }
+    }
+
+    private async Task CalculateP2Async()
+    {
+        IsCalculatingP2 = true;
+        ShowP2Results = false;
+        ClearResultsP2();
+
+        var sw = Stopwatch.StartNew();
+
+        try
+        {
+            var response = await _http.GetStringAsync("http://localhost:8000/punto2");
+            var doc = JsonDocument.Parse(response);
+            var root = doc.RootElement;
+
+            // Matrices
+            ParseMatrix(root, "matriz_G_original", MatrizGOriginalRows);
+            ParseMatrix(root, "forma_estandar", MatrizFormaEstandarRows);
+            ParseMatrix(root, "matriz_H", MatrizHRows);
+            ParseMatrix(root, "matriz_equivalente", MatrizEquivalenteRows);
+            ParseMatrix(root, "matriz_extension", MatrizExtensionRows);
+            ParseMatrix(root, "matriz_perforacion", MatrizPerforacionRows);
+            ParseMatrix(root, "matriz_reduccion", MatrizReduccionRows);
+
+            // Auto_dual
+            EsAutoDual = root.GetProperty("es_auto_dual").GetBoolean();
+            MensajeDual = root.GetProperty("mensaje_dual").GetString() ?? "";
+
+            // Codewords
+            var cwOrig = root.GetProperty("codewords_original").EnumerateArray().ToList();
+            for (int i = 0; i < cwOrig.Count; i++)
+                CodewordsOriginalRows.Add(new CodewordRow
+                {
+                    Index = i + 1,
+                    Codeword = $"({string.Join(", ", cwOrig[i].EnumerateArray().Select(x => x.GetInt32()))})"
+                });
+            var cwEquiv = root.GetProperty("codewords_equivalente").EnumerateArray().ToList();
+            for (int i = 0; i < cwEquiv.Count; i++)
+                CodewordsEquivalenteRows.Add(new CodewordRow
+                {
+                    Index = i + 1,
+                    Codeword = $"({string.Join(", ", cwEquiv[i].EnumerateArray().Select(x => x.GetInt32()))})"
+                });
+            
+            sw.Stop();
+            ComputeTimeTextP2 = $"Calculado en {sw.ElapsedMilliseconds} ms";
+            ShowP2Results = true;
+        }
+        catch (Exception ex) { _ = ex; }
+        finally
+        {
+            IsCalculatingP2 = false;
+            Application.Current.Dispatcher.Invoke(() => CalculateP2Command.RaiseCanExecuteChanged());
+        }
+    }
+
+    private void ParseMatrix(JsonElement root, string key, ObservableCollection<MatrixRow> target)
+    {
+        var rows = root.GetProperty(key).EnumerateArray().ToList();
+        foreach (var row in rows)
+        {
+            var cells = row.EnumerateArray().Select(x => x.GetInt32().ToString()).ToArray();
+            target.Add(new MatrixRow { Cells = cells });
+        }
+    }
+
+    private void ClearResultsP2()
+    {
+        MatrizGOriginalRows.Clear();
+        MatrizFormaEstandarRows.Clear();
+        MatrizHRows.Clear();
+        MatrizEquivalenteRows.Clear();
+        MatrizExtensionRows.Clear();
+        MatrizPerforacionRows.Clear();
+        MatrizReduccionRows.Clear();
+        CodewordsOriginalRows.Clear();
+        CodewordsEquivalenteRows.Clear();
+        EsAutoDual = false;
+        MensajeDual = string.Empty;
     }
 
     private CodeResult ParseApiResponse(string json, int n, int k, int q)

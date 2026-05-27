@@ -311,7 +311,7 @@
                 </Grid>
             </Border>
 
-            <!--  ══════════════════════════════════════════ MAIN CONTENT  -->
+            <!--  Punto 1  -->
             <Grid Grid.Row="1">
                 <Grid.Style>
                     <Style TargetType="Grid">
@@ -329,7 +329,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <!--  ──────────────────────────── LEFT PANEL  -->
+                <!--  Panel Punto 1  -->
                 <Border
                     Grid.Column="0"
                     Background="{DynamicResource BgSecondaryBrush}"
@@ -338,7 +338,7 @@
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                         <StackPanel Margin="16">
 
-                            <!--  INPUT CARD  -->
+                            <!--  Punto 1 Menu  -->
                             <Border Margin="0,0,0,14" Style="{StaticResource Card}">
                                 <StackPanel>
                                     <TextBlock Style="{StaticResource SectionHeader}" Text="PARÁMETROS" />
@@ -391,17 +391,17 @@
                                     <Button
                                         Margin="0,0,0,8"
                                         HorizontalAlignment="Stretch"
-                                        Command="{Binding CalculateCommand}"
-                                        Content="▶  CALCULAR"
+                                        Command="{Binding CalculateP1Command}"
+                                        Content="CALCULAR"
                                         Style="{StaticResource PrimaryButton}" />
 
                                     <!--  Cancel button (visible while calculating)  -->
                                     <Button
                                         HorizontalAlignment="Stretch"
                                         Command="{Binding CancelCommand}"
-                                        Content="✕  Cancelar"
+                                        Content="Cancelar"
                                         Style="{StaticResource SecondaryButton}"
-                                        Visibility="{Binding IsCalculating, Converter={StaticResource BoolToVis}}" />
+                                        Visibility="{Binding IsCalculatingP1, Converter={StaticResource BoolToVis}}" />
                                 </StackPanel>
                             </Border>
                         </StackPanel>
@@ -416,7 +416,7 @@
                         Padding="24,20"
                         HorizontalScrollBarVisibility="Disabled"
                         VerticalScrollBarVisibility="Auto"
-                        Visibility="{Binding ShowResults, Converter={StaticResource BoolToVis}}">
+                        Visibility="{Binding ShowResultsP1, Converter={StaticResource BoolToVis}}">
 
                         <StackPanel x:Name="ResultsPanel">
                             <StackPanel.Triggers>
@@ -758,6 +758,7 @@
                     </ScrollViewer>
                 </Grid>
             </Grid>
+
             <!--  Punto 2: Código Lineal Binario  -->
             <Grid Grid.Row="1">
                 <Grid.Style>
@@ -770,25 +771,365 @@
                         </Style.Triggers>
                     </Style>
                 </Grid.Style>
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        FontSize="64"
-                        Foreground="{DynamicResource TextMutedBrush}"
-                        Text="⊞" />
-                    <TextBlock
-                        Margin="0,8,0,4"
-                        HorizontalAlignment="Center"
-                        FontSize="15"
-                        FontWeight="SemiBold"
-                        Foreground="{DynamicResource TextMutedBrush}"
-                        Text="Código Lineal Binario" />
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        FontSize="12"
-                        Foreground="{DynamicResource TextMutedBrush}"
-                        Text="En construcción" />
-                </StackPanel>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="272" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!--  LEFT PANEL  -->
+                <Border
+                    Grid.Column="0"
+                    Background="{DynamicResource BgSecondaryBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="0,0,1,0">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                        <StackPanel Margin="16">
+                            <Border Style="{StaticResource Card}">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource SectionHeader}" Text="CÓDIGO LINEAL BINARIO" />
+                                    <TextBlock
+                                        Margin="0,0,0,14"
+                                        Style="{StaticResource FieldLabel}"
+                                        Text="Matriz G fija [7,4] sobre GF(2)"
+                                        TextWrapping="Wrap" />
+                                    <Button
+                                        HorizontalAlignment="Stretch"
+                                        Command="{Binding CalculateP2Command}"
+                                        Content="▶  CALCULAR"
+                                        Style="{StaticResource PrimaryButton}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+
+                <!--  RIGHT PANEL  -->
+                <ScrollViewer
+                    Grid.Column="1"
+                    Padding="24,20"
+                    HorizontalScrollBarVisibility="Disabled"
+                    VerticalScrollBarVisibility="Auto"
+                    Visibility="{Binding ShowResultsP2, Converter={StaticResource BoolToVis}}">
+                    <StackPanel>
+
+                        <!--  Matriz G original  -->
+                        <Expander Header="Matriz Generadora G original" Style="{StaticResource ResultExpander}">
+                            <ScrollViewer Padding="18,8,18,14" HorizontalScrollBarVisibility="Auto">
+                                <ItemsControl ItemsSource="{Binding MatrizGOriginalRows}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <ItemsControl Margin="0,1" ItemsSource="{Binding Cells}">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <StackPanel Orientation="Horizontal" />
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border
+                                                            Margin="2,1"
+                                                            Background="{DynamicResource InputBgBrush}"
+                                                            BorderBrush="{DynamicResource BorderBrush}"
+                                                            BorderThickness="1"
+                                                            CornerRadius="3">
+                                                            <TextBlock
+                                                                MinWidth="38"
+                                                                Padding="10,5"
+                                                                FontFamily="Cascadia Mono, Consolas"
+                                                                FontSize="12"
+                                                                Foreground="{DynamicResource AccentBrush}"
+                                                                Text="{Binding}"
+                                                                TextAlignment="Center" />
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </Expander>
+
+                        <!--  Forma estándar  -->
+                        <Expander Header="Forma Estándar G' = [Ik | P]" Style="{StaticResource ResultExpander}">
+                            <ScrollViewer Padding="18,8,18,14" HorizontalScrollBarVisibility="Auto">
+                                <ItemsControl ItemsSource="{Binding MatrizFormaEstandarRows}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <ItemsControl Margin="0,1" ItemsSource="{Binding Cells}">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <StackPanel Orientation="Horizontal" />
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border
+                                                            Margin="2,1"
+                                                            Background="{DynamicResource InputBgBrush}"
+                                                            BorderBrush="{DynamicResource BorderBrush}"
+                                                            BorderThickness="1"
+                                                            CornerRadius="3">
+                                                            <TextBlock
+                                                                MinWidth="38"
+                                                                Padding="10,5"
+                                                                FontFamily="Cascadia Mono, Consolas"
+                                                                FontSize="12"
+                                                                Foreground="{DynamicResource AccentBrush}"
+                                                                Text="{Binding}"
+                                                                TextAlignment="Center" />
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </Expander>
+
+                        <!--  Matriz H y auto-dual  -->
+                        <Expander Header="Matriz de Control H y Auto-dualidad" Style="{StaticResource ResultExpander}">
+                            <StackPanel Margin="18,8,18,14">
+                                <Border
+                                    Margin="0,0,0,10"
+                                    Padding="10,7"
+                                    CornerRadius="5">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="#1AE05252" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding EsAutoDual}" Value="True">
+                                                    <Setter Property="Background" Value="#1A4EC994" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <TextBlock
+                                        FontSize="12"
+                                        Text="{Binding MensajeDual}"
+                                        TextWrapping="Wrap">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="{DynamicResource ErrorBrush}" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding EsAutoDual}" Value="True">
+                                                        <Setter Property="Foreground" Value="{DynamicResource SuccessBrush}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Border>
+                                <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                                    <ItemsControl ItemsSource="{Binding MatrizHRows}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <ItemsControl Margin="0,1" ItemsSource="{Binding Cells}">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <StackPanel Orientation="Horizontal" />
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border
+                                                                Margin="2,1"
+                                                                Background="{DynamicResource InputBgBrush}"
+                                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                                BorderThickness="1"
+                                                                CornerRadius="3">
+                                                                <TextBlock
+                                                                    MinWidth="38"
+                                                                    Padding="10,5"
+                                                                    FontFamily="Cascadia Mono, Consolas"
+                                                                    FontSize="12"
+                                                                    Foreground="{DynamicResource TerminalAccentBrush}"
+                                                                    Text="{Binding}"
+                                                                    TextAlignment="Center" />
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ScrollViewer>
+                            </StackPanel>
+                        </Expander>
+
+                        <!--  Código equivalente  -->
+                        <Expander Header="Código Equivalente" Style="{StaticResource ResultExpander}">
+                            <StackPanel Margin="18,8,18,14">
+                                <TextBlock
+                                    Margin="0,0,0,8"
+                                    FontSize="12"
+                                    Foreground="{DynamicResource TextSecondaryBrush}"
+                                    Text="Operación: permutación de columnas 0 y 1" />
+                                <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                                    <ItemsControl ItemsSource="{Binding MatrizEquivalenteRows}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <ItemsControl Margin="0,1" ItemsSource="{Binding Cells}">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <StackPanel Orientation="Horizontal" />
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border
+                                                                Margin="2,1"
+                                                                Background="{DynamicResource InputBgBrush}"
+                                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                                BorderThickness="1"
+                                                                CornerRadius="3">
+                                                                <TextBlock
+                                                                    MinWidth="38"
+                                                                    Padding="10,5"
+                                                                    FontFamily="Cascadia Mono, Consolas"
+                                                                    FontSize="12"
+                                                                    Foreground="{DynamicResource AccentBrush}"
+                                                                    Text="{Binding}"
+                                                                    TextAlignment="Center" />
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ScrollViewer>
+                            </StackPanel>
+                        </Expander>
+
+                        <!--  Extensión, perforación, reducción  -->
+                        <Expander Header="Extensión, Perforación y Reducción" Style="{StaticResource ResultExpander}">
+                            <StackPanel Margin="18,8,18,14">
+
+                                <TextBlock
+                                    Margin="0,0,0,4"
+                                    Style="{StaticResource FieldLabel}"
+                                    Text="EXTENSIÓN" />
+                                <ScrollViewer Margin="0,0,0,12" HorizontalScrollBarVisibility="Auto">
+                                    <ItemsControl ItemsSource="{Binding MatrizExtensionRows}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <ItemsControl Margin="0,1" ItemsSource="{Binding Cells}">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <StackPanel Orientation="Horizontal" />
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border
+                                                                Margin="2,1"
+                                                                Background="{DynamicResource InputBgBrush}"
+                                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                                BorderThickness="1"
+                                                                CornerRadius="3">
+                                                                <TextBlock
+                                                                    MinWidth="38"
+                                                                    Padding="10,5"
+                                                                    FontFamily="Cascadia Mono, Consolas"
+                                                                    FontSize="12"
+                                                                    Foreground="{DynamicResource AccentBrush}"
+                                                                    Text="{Binding}"
+                                                                    TextAlignment="Center" />
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ScrollViewer>
+
+                                <TextBlock
+                                    Margin="0,0,0,4"
+                                    Style="{StaticResource FieldLabel}"
+                                    Text="PERFORACIÓN (i=1)" />
+                                <ScrollViewer Margin="0,0,0,12" HorizontalScrollBarVisibility="Auto">
+                                    <ItemsControl ItemsSource="{Binding MatrizPerforacionRows}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <ItemsControl Margin="0,1" ItemsSource="{Binding Cells}">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <StackPanel Orientation="Horizontal" />
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border
+                                                                Margin="2,1"
+                                                                Background="{DynamicResource InputBgBrush}"
+                                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                                BorderThickness="1"
+                                                                CornerRadius="3">
+                                                                <TextBlock
+                                                                    MinWidth="38"
+                                                                    Padding="10,5"
+                                                                    FontFamily="Cascadia Mono, Consolas"
+                                                                    FontSize="12"
+                                                                    Foreground="{DynamicResource AccentBrush}"
+                                                                    Text="{Binding}"
+                                                                    TextAlignment="Center" />
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ScrollViewer>
+
+                                <TextBlock
+                                    Margin="0,0,0,4"
+                                    Style="{StaticResource FieldLabel}"
+                                    Text="REDUCCIÓN (i=1)" />
+                                <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                                    <ItemsControl ItemsSource="{Binding MatrizReduccionRows}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <ItemsControl Margin="0,1" ItemsSource="{Binding Cells}">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <StackPanel Orientation="Horizontal" />
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border
+                                                                Margin="2,1"
+                                                                Background="{DynamicResource InputBgBrush}"
+                                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                                BorderThickness="1"
+                                                                CornerRadius="3">
+                                                                <TextBlock
+                                                                    MinWidth="38"
+                                                                    Padding="10,5"
+                                                                    FontFamily="Cascadia Mono, Consolas"
+                                                                    FontSize="12"
+                                                                    Foreground="{DynamicResource AccentBrush}"
+                                                                    Text="{Binding}"
+                                                                    TextAlignment="Center" />
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ScrollViewer>
+
+                            </StackPanel>
+                        </Expander>
+
+                        <TextBlock Height="24" />
+                    </StackPanel>
+                </ScrollViewer>
             </Grid>
 
             <!--  Punto 3: Código Cíclico  -->
