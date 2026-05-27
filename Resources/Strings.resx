@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms</value></resheader>
+
+  <data name="AppTitle" xml:space="preserve"><value>VRN — Reed-Solomon Code Analyzer</value></data>
+  <data name="LabelN" xml:space="preserve"><value>N (code length)</value></data>
+  <data name="LabelK" xml:space="preserve"><value>K (dimension)</value></data>
+  <data name="LabelQ" xml:space="preserve"><value>Q (field size, prime)</value></data>
+  <data name="BtnCalculate" xml:space="preserve"><value>Calculate</value></data>
+  <data name="BtnCancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="BtnExport" xml:space="preserve"><value>Export History</value></data>
+  <data name="BtnImport" xml:space="preserve"><value>Import History</value></data>
+  <data name="BtnThemeToggle" xml:space="preserve"><value>Toggle Theme</value></data>
+  <data name="SectionParameters" xml:space="preserve"><value>Parameters</value></data>
+  <data name="SectionResults" xml:space="preserve"><value>Results</value></data>
+  <data name="SectionHistory" xml:space="preserve"><value>History</value></data>
+  <data name="StepValidate" xml:space="preserve"><value>Validating parameters</value></data>
+  <data name="StepField" xml:space="preserve"><value>Building field GF(q)</value></data>
+  <data name="StepPolynomials" xml:space="preserve"><value>Generating polynomials</value></data>
+  <data name="StepCodewords" xml:space="preserve"><value>Generating codewords</value></data>
+  <data name="StepMatrixG" xml:space="preserve"><value>Building generator matrix G</value></data>
+  <data name="StepMatrixH" xml:space="preserve"><value>Building parity-check matrix H</value></data>
+  <data name="StepVerify" xml:space="preserve"><value>Verifying codewords</value></data>
+  <data name="StepDistance" xml:space="preserve"><value>Computing minimum distance</value></data>
+  <data name="StepCrossVerify" xml:space="preserve"><value>Cross-verifying encoding methods</value></data>
+  <data name="ResultMinDist" xml:space="preserve"><value>Minimum distance d</value></data>
+  <data name="ResultSingleton" xml:space="preserve"><value>Singleton bound</value></data>
+  <data name="ResultIsRS" xml:space="preserve"><value>Is Reed-Solomon code</value></data>
+  <data name="ResultCodewords" xml:space="preserve"><value>Codewords</value></data>
+  <data name="ResultPolynomials" xml:space="preserve"><value>Polynomials</value></data>
+  <data name="ResultMatrixG" xml:space="preserve"><value>Generator Matrix G</value></data>
+  <data name="ResultMatrixH" xml:space="preserve"><value>Parity-Check Matrix H</value></data>
+  <data name="ResultFieldTables" xml:space="preserve"><value>Field Tables GF(q)</value></data>
+  <data name="ResultAddTable" xml:space="preserve"><value>Addition Table</value></data>
+  <data name="ResultMulTable" xml:space="preserve"><value>Multiplication Table</value></data>
+  <data name="WarnExceedsLimit" xml:space="preserve"><value>Warning: q^k exceeds 50,000 — computation may be slow.</value></data>
+  <data name="ErrorInvalidParams" xml:space="preserve"><value>Please fix validation errors before calculating.</value></data>
+  <data name="LblComputeTime" xml:space="preserve"><value>Computed in {0} ms</value></data>
+  <data name="LblYes" xml:space="preserve"><value>Yes</value></data>
+  <data name="LblNo" xml:space="preserve"><value>No</value></data>
+  <data name="HistoryEmpty" xml:space="preserve"><value>No history yet.</value></data>
+  <data name="ExportSuccess" xml:space="preserve"><value>History exported successfully.</value></data>
+  <data name="ImportSuccess" xml:space="preserve"><value>History imported successfully.</value></data>
+</root>

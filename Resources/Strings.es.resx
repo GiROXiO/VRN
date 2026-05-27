@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms</value></resheader>
+
+  <data name="AppTitle" xml:space="preserve"><value>VRN — Analizador de Códigos Reed-Solomon</value></data>
+  <data name="LabelN" xml:space="preserve"><value>N (longitud del código)</value></data>
+  <data name="LabelK" xml:space="preserve"><value>K (dimensión)</value></data>
+  <data name="LabelQ" xml:space="preserve"><value>Q (tamaño del campo, primo)</value></data>
+  <data name="BtnCalculate" xml:space="preserve"><value>Calcular</value></data>
+  <data name="BtnCancel" xml:space="preserve"><value>Cancelar</value></data>
+  <data name="BtnExport" xml:space="preserve"><value>Exportar Historial</value></data>
+  <data name="BtnImport" xml:space="preserve"><value>Importar Historial</value></data>
+  <data name="BtnThemeToggle" xml:space="preserve"><value>Cambiar Tema</value></data>
+  <data name="SectionParameters" xml:space="preserve"><value>Parámetros</value></data>
+  <data name="SectionResults" xml:space="preserve"><value>Resultados</value></data>
+  <data name="SectionHistory" xml:space="preserve"><value>Historial</value></data>
+  <data name="StepValidate" xml:space="preserve"><value>Validando parámetros</value></data>
+  <data name="StepField" xml:space="preserve"><value>Construyendo campo GF(q)</value></data>
+  <data name="StepPolynomials" xml:space="preserve"><value>Generando polinomios</value></data>
+  <data name="StepCodewords" xml:space="preserve"><value>Generando palabras código</value></data>
+  <data name="StepMatrixG" xml:space="preserve"><value>Construyendo matriz generadora G</value></data>
+  <data name="StepMatrixH" xml:space="preserve"><value>Construyendo matriz de paridad H</value></data>
+  <data name="StepVerify" xml:space="preserve"><value>Verificando palabras código</value></data>
+  <data name="StepDistance" xml:space="preserve"><value>Calculando distancia mínima</value></data>
+  <data name="StepCrossVerify" xml:space="preserve"><value>Verificación cruzada de métodos de codificación</value></data>
+  <data name="ResultMinDist" xml:space="preserve"><value>Distancia mínima d</value></data>
+  <data name="ResultSingleton" xml:space="preserve"><value>Cota de Singleton</value></data>
+  <data name="ResultIsRS" xml:space="preserve"><value>Es código Reed-Solomon</value></data>
+  <data name="ResultCodewords" xml:space="preserve"><value>Palabras Código</value></data>
+  <data name="ResultPolynomials" xml:space="preserve"><value>Polinomios</value></data>
+  <data name="ResultMatrixG" xml:space="preserve"><value>Matriz Generadora G</value></data>
+  <data name="ResultMatrixH" xml:space="preserve"><value>Matriz de Paridad H</value></data>
+  <data name="ResultFieldTables" xml:space="preserve"><value>Tablas del Campo GF(q)</value></data>
+  <data name="ResultAddTable" xml:space="preserve"><value>Tabla de Adición</value></data>
+  <data name="ResultMulTable" xml:space="preserve"><value>Tabla de Multiplicación</value></data>
+  <data name="WarnExceedsLimit" xml:space="preserve"><value>Advertencia: q^k supera 50,000 — el cálculo puede ser lento.</value></data>
+  <data name="ErrorInvalidParams" xml:space="preserve"><value>Corrija los errores de validación antes de calcular.</value></data>
+  <data name="LblComputeTime" xml:space="preserve"><value>Calculado en {0} ms</value></data>
+  <data name="LblYes" xml:space="preserve"><value>Sí</value></data>
+  <data name="LblNo" xml:space="preserve"><value>No</value></data>
+  <data name="HistoryEmpty" xml:space="preserve"><value>Sin historial aún.</value></data>
+  <data name="ExportSuccess" xml:space="preserve"><value>Historial exportado correctamente.</value></data>
+  <data name="ImportSuccess" xml:space="preserve"><value>Historial importado correctamente.</value></data>
+</root>
