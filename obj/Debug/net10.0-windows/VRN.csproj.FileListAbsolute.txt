@@ -41,7 +41,6 @@ C:\trabajosUniversidad\quintoSemestre\teoria\VRN\obj\Debug\net10.0-windows\Theme
 C:\trabajosUniversidad\quintoSemestre\teoria\VRN\obj\Debug\net10.0-windows\App.baml
 C:\trabajosUniversidad\quintoSemestre\teoria\VRN\obj\Debug\net10.0-windows\Views\MainWindow.g.cs
 C:\trabajosUniversidad\quintoSemestre\teoria\VRN\obj\Debug\net10.0-windows\App.g.cs
-C:\trabajosUniversidad\quintoSemestre\teoria\VRN\obj\Debug\net10.0-windows\GeneratedInternalTypeHelper.g.cs
 C:\trabajosUniversidad\quintoSemestre\teoria\VRN\obj\Debug\net10.0-windows\VRN_MarkupCompile.cache
 C:\trabajosUniversidad\quintoSemestre\teoria\VRN\obj\Debug\net10.0-windows\VRN_MarkupCompile.lref
 C:\trabajosUniversidad\quintoSemestre\teoria\VRN\obj\Debug\net10.0-windows\Views\MainWindow.baml
@@ -60,3 +59,4 @@ C:\trabajosUniversidad\quintoSemestre\teoria\VRN\obj\Debug\net10.0-windows\refin
 C:\trabajosUniversidad\quintoSemestre\teoria\VRN\obj\Debug\net10.0-windows\VRN.pdb
 C:\trabajosUniversidad\quintoSemestre\teoria\VRN\obj\Debug\net10.0-windows\VRN.genruntimeconfig.cache
 C:\trabajosUniversidad\quintoSemestre\teoria\VRN\obj\Debug\net10.0-windows\ref\VRN.dll
+C:\trabajosUniversidad\quintoSemestre\teoria\VRN\obj\Debug\net10.0-windows\VRN.sourcelink.json
