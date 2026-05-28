@@ -148,11 +148,48 @@ public class MainViewModel : BaseViewModel
     public ObservableCollection<CodewordRow> CodewordsOriginalRows { get; } = new();
     public ObservableCollection<CodewordRow> CodewordsEquivalenteRows { get; } = new();
 
+    // Punto 3
+    private bool _showResultsP3;
+    public bool ShowResultsP3 { get => _showResultsP3; set => SetField(ref _showResultsP3, value); }
+
+    private bool _isCalculatingP3;
+    public bool IsCalculatingP3 { get => _isCalculatingP3; set { SetField(ref _isCalculatingP3, value); OnPropertyChanged(nameof(IsIdleP3)); } }
+    public bool IsIdleP3 => !_isCalculatingP3;
+
+    private int _casoSeleccionado = 2;
+    public int CasoSeleccionado { get => _casoSeleccionado; set => SetField(ref _casoSeleccionado, value); }
+
+    private string _nombreCodigo = string.Empty;
+    public string NombreCodigo { get => _nombreCodigo; set => SetField(ref _nombreCodigo, value); }
+
+    private string _parametrosCodigo = string.Empty;
+    public string ParametrosCodigo { get => _parametrosCodigo; set => SetField(ref _parametrosCodigo, value); }
+
+    private string _polinomioGenerador = string.Empty;
+    public string PolinomioGenerador { get => _polinomioGenerador; set => SetField(ref _polinomioGenerador, value); }
+
+    private string _polinomioControl = string.Empty;
+    public string PolinomioControl { get => _polinomioControl; set => SetField(ref _polinomioControl, value); }
+
+    private string _computeTimeTextP3 = string.Empty;
+    public string ComputeTimeTextP3 { get => _computeTimeTextP3; set => SetField(ref _computeTimeTextP3, value); }
+
+    private int _distanciaMinima;
+    public int DistanciaMinima { get => _distanciaMinima; set => SetField(ref _distanciaMinima, value); }
+
+    private int _totalCodewordsP3;
+    public int TotalCodewordsP3 { get => _totalCodewordsP3; set => SetField(ref _totalCodewordsP3, value); }
+
+    public ObservableCollection<MatrixRow> MatrizGP3Rows { get; } = new();
+    public ObservableCollection<MatrixRow> MatrizHP3Rows { get; } = new();
+    public ObservableCollection<string> CodewordsP3 { get; } = new();
+
     // Comandos
     public RelayCommand CalculateP1Command { get; }
     public RelayCommand CancelCommand { get; }
     public RelayCommand ToggleThemeCommand { get; }
     public RelayCommand CalculateP2Command { get; }
+    public RelayCommand CalculateP3Command { get; }
 
     private readonly ThemeService _themeService;
 
@@ -163,6 +200,7 @@ public class MainViewModel : BaseViewModel
         CancelCommand = new RelayCommand(_ => _cts?.Cancel(), _ => IsCalculatingP1);
         ToggleThemeCommand = new RelayCommand(_ => _themeService.Toggle());
         CalculateP2Command = new RelayCommand(_ => _ = CalculateP2Async(), _ => IsIdleP2);
+        CalculateP3Command = new RelayCommand(_ => _ = CalculateP3Async(), _ => IsIdleP3);
 
         NavPoint1Command = new RelayCommand(_ => ActivePoint = 1);
         NavPoint2Command = new RelayCommand(_ => ActivePoint = 2);
@@ -278,7 +316,7 @@ public class MainViewModel : BaseViewModel
                     Index = i + 1,
                     Codeword = $"({string.Join(", ", cwEquiv[i].EnumerateArray().Select(x => x.GetInt32()))})"
                 });
-            
+
             sw.Stop();
             ComputeTimeTextP2 = $"Calculado en {sw.ElapsedMilliseconds} ms";
             ShowP2Results = true;
@@ -314,6 +352,57 @@ public class MainViewModel : BaseViewModel
         CodewordsEquivalenteRows.Clear();
         EsAutoDual = false;
         MensajeDual = string.Empty;
+    }
+
+    // Punto 3 
+    private async Task CalculateP3Async()
+    {
+        IsCalculatingP3 = true;
+        ShowResultsP3 = false;
+        ClearResultsP3();
+
+        var sw = Stopwatch.StartNew();
+
+        try
+        {
+            var url = $"http://localhost:8000/punto3?caso={CasoSeleccionado}";
+            var response = await _http.GetStringAsync(url);
+            var doc = JsonDocument.Parse(response);
+            var root = doc.RootElement;
+
+            NombreCodigo = root.GetProperty("nombre").GetString() ?? "";
+            ParametrosCodigo = root.GetProperty("parametros").GetString() ?? "";
+            PolinomioGenerador = root.GetProperty("polinomio_generador").GetString() ?? "";
+            PolinomioControl = root.GetProperty("polinomio_control").GetString() ?? "";
+            DistanciaMinima = root.GetProperty("distancia_minima").GetInt32();
+            TotalCodewordsP3 = root.GetProperty("total_codewords").GetInt32();
+
+            ParseMatrix(root, "matriz_G", MatrizGP3Rows);
+            ParseMatrix(root, "matriz_H", MatrizHP3Rows);
+
+            foreach (var cw in root.GetProperty("codewords").EnumerateArray())
+                CodewordsP3.Add(cw.GetString() ?? "");
+
+            sw.Stop();
+            ComputeTimeTextP3 = $"Calculado en {sw.ElapsedMilliseconds} ms";
+            await Task.Delay(100);
+            ShowResultsP3 = true;
+        }
+        catch (Exception ex) { _ = ex; }
+        finally
+        {
+            IsCalculatingP3 = false;
+            Application.Current.Dispatcher.Invoke(() => CalculateP3Command.RaiseCanExecuteChanged());
+        }
+    }
+
+    private void ClearResultsP3()
+    {
+        MatrizGP3Rows.Clear();
+        MatrizHP3Rows.Clear();
+        CodewordsP3.Clear();
+        NombreCodigo = ParametrosCodigo = PolinomioGenerador = PolinomioControl = "";
+        DistanciaMinima = TotalCodewordsP3 = 0;
     }
 
     private CodeResult ParseApiResponse(string json, int n, int k, int q)

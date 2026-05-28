@@ -1144,25 +1144,226 @@
                         </Style.Triggers>
                     </Style>
                 </Grid.Style>
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        FontSize="64"
-                        Foreground="{DynamicResource TextMutedBrush}"
-                        Text="↻" />
-                    <TextBlock
-                        Margin="0,8,0,4"
-                        HorizontalAlignment="Center"
-                        FontSize="15"
-                        FontWeight="SemiBold"
-                        Foreground="{DynamicResource TextMutedBrush}"
-                        Text="Código Cíclico" />
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        FontSize="12"
-                        Foreground="{DynamicResource TextMutedBrush}"
-                        Text="En construcción" />
-                </StackPanel>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="272" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!--  LEFT PANEL  -->
+                <Border
+                    Grid.Column="0"
+                    Background="{DynamicResource BgSecondaryBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="0,0,1,0">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                        <StackPanel Margin="16">
+                            <Border Style="{StaticResource Card}">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource SectionHeader}" Text="CÓDIGO CÍCLICO BINARIO" />
+                                    <TextBlock
+                                        Margin="0,0,0,12"
+                                        Style="{StaticResource FieldLabel}"
+                                        Text="Longitud n = 7 sobre GF(2)" />
+
+                                    <TextBlock Style="{StaticResource FieldLabel}" Text="Polinomio generador" />
+                                    <ComboBox
+                                        Margin="0,4,0,14"
+                                        SelectedIndex="{Binding CasoSeleccionado}"
+                                        Style="{StaticResource ModernComboBox}">
+                                        <ComboBoxItem Content="Caso 1: g(x) = x + 1 → CP(7,4)" />
+                                        <ComboBoxItem Content="Caso 2: g(x) = x³+x²+1 → Ham₂(4)" />
+                                        <ComboBoxItem Content="Caso 3: g(x) = x³+x+1 → ≈Ham₂(4)" />
+                                        <ComboBoxItem Content="Caso 4: g(x) = u → Sim₂(4)" />
+                                        <ComboBoxItem Content="Caso 5: g(x) = v → ≈Sim₂(4)" />
+                                        <ComboBoxItem Content="Caso 6: g(x) = Φ₇ → CR(7,1)" />
+                                    </ComboBox>
+
+                                    <Button
+                                        HorizontalAlignment="Stretch"
+                                        Command="{Binding CalculateP3Command}"
+                                        Content="▶  CALCULAR"
+                                        Style="{StaticResource PrimaryButton}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+
+                <!--  RIGHT PANEL  -->
+                <ScrollViewer
+                    Grid.Column="1"
+                    Padding="24,20"
+                    HorizontalScrollBarVisibility="Disabled"
+                    VerticalScrollBarVisibility="Auto"
+                    Visibility="{Binding ShowResultsP3, Converter={StaticResource BoolToVis}}">
+                    <StackPanel>
+
+                        <!--  Métricas  -->
+                        <Border
+                            Margin="0,0,0,16"
+                            Padding="20,16"
+                            Background="{DynamicResource CardBgBrush}"
+                            BorderBrush="{DynamicResource BorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="10">
+                            <Border.Effect>
+                                <DropShadowEffect
+                                    BlurRadius="14"
+                                    Opacity="0.18"
+                                    ShadowDepth="2"
+                                    Color="#000" />
+                            </Border.Effect>
+                            <DockPanel>
+                                <TextBlock
+                                    VerticalAlignment="Bottom"
+                                    DockPanel.Dock="Right"
+                                    FontFamily="Cascadia Mono, Consolas"
+                                    FontSize="11"
+                                    Foreground="{DynamicResource TextMutedBrush}"
+                                    Text="{Binding ComputeTimeTextP3}" />
+                                <UniformGrid Columns="4" Rows="1">
+                                    <StackPanel Margin="0,0,16,0">
+                                        <TextBlock Style="{StaticResource FieldLabel}" Text="CÓDIGO" />
+                                        <TextBlock
+                                            Foreground="{DynamicResource AccentBrush}"
+                                            Style="{StaticResource MetricValue}"
+                                            Text="{Binding NombreCodigo}" />
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,16,0">
+                                        <TextBlock Style="{StaticResource FieldLabel}" Text="PARÁMETROS" />
+                                        <TextBlock Style="{StaticResource MetricValue}" Text="{Binding ParametrosCodigo}" />
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,16,0">
+                                        <TextBlock Style="{StaticResource FieldLabel}" Text="DISTANCIA MÍN." />
+                                        <TextBlock
+                                            Foreground="{DynamicResource AccentBrush}"
+                                            Style="{StaticResource MetricValue}"
+                                            Text="{Binding DistanciaMinima}" />
+                                    </StackPanel>
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource FieldLabel}" Text="PALABRAS CÓDIGO" />
+                                        <TextBlock Style="{StaticResource MetricValue}" Text="{Binding TotalCodewordsP3}" />
+                                    </StackPanel>
+                                </UniformGrid>
+                            </DockPanel>
+                        </Border>
+
+                        <!--  Polinomios  -->
+                        <Expander Header="Polinomios" Style="{StaticResource ResultExpander}">
+                            <StackPanel Margin="18,8,18,14">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="POLINOMIO GENERADOR g(x)" />
+                                <TextBlock
+                                    Margin="0,4,0,12"
+                                    FontFamily="Cascadia Mono, Consolas"
+                                    FontSize="13"
+                                    Foreground="{DynamicResource AccentBrush}"
+                                    Text="{Binding PolinomioGenerador}" />
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="POLINOMIO DE CONTROL h(x)" />
+                                <TextBlock
+                                    Margin="0,4,0,0"
+                                    FontFamily="Cascadia Mono, Consolas"
+                                    FontSize="13"
+                                    Foreground="{DynamicResource TerminalAccentBrush}"
+                                    Text="{Binding PolinomioControl}" />
+                            </StackPanel>
+                        </Expander>
+
+                        <!--  Matriz G  -->
+                        <Expander Header="Matriz Generadora G" Style="{StaticResource ResultExpander}">
+                            <ScrollViewer Padding="18,8,18,14" HorizontalScrollBarVisibility="Auto">
+                                <ItemsControl ItemsSource="{Binding MatrizGP3Rows}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <ItemsControl Margin="0,1" ItemsSource="{Binding Cells}">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <StackPanel Orientation="Horizontal" />
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border
+                                                            Margin="2,1"
+                                                            Background="{DynamicResource InputBgBrush}"
+                                                            BorderBrush="{DynamicResource BorderBrush}"
+                                                            BorderThickness="1"
+                                                            CornerRadius="3">
+                                                            <TextBlock
+                                                                MinWidth="38"
+                                                                Padding="10,5"
+                                                                FontFamily="Cascadia Mono, Consolas"
+                                                                FontSize="12"
+                                                                Foreground="{DynamicResource AccentBrush}"
+                                                                Text="{Binding}"
+                                                                TextAlignment="Center" />
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </Expander>
+
+                        <!--  Matriz H  -->
+                        <Expander Header="Matriz de Control H" Style="{StaticResource ResultExpander}">
+                            <ScrollViewer Padding="18,8,18,14" HorizontalScrollBarVisibility="Auto">
+                                <ItemsControl ItemsSource="{Binding MatrizHP3Rows}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <ItemsControl Margin="0,1" ItemsSource="{Binding Cells}">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <StackPanel Orientation="Horizontal" />
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border
+                                                            Margin="2,1"
+                                                            Background="{DynamicResource InputBgBrush}"
+                                                            BorderBrush="{DynamicResource BorderBrush}"
+                                                            BorderThickness="1"
+                                                            CornerRadius="3">
+                                                            <TextBlock
+                                                                MinWidth="38"
+                                                                Padding="10,5"
+                                                                FontFamily="Cascadia Mono, Consolas"
+                                                                FontSize="12"
+                                                                Foreground="{DynamicResource TerminalAccentBrush}"
+                                                                Text="{Binding}"
+                                                                TextAlignment="Center" />
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </Expander>
+
+                        <!--  Codewords  -->
+                        <Expander Header="Palabras Código" Style="{StaticResource ResultExpander}">
+                            <Border Padding="18,8,18,14">
+                                <DataGrid
+                                    MaxHeight="300"
+                                    AutoGenerateColumns="False"
+                                    ItemsSource="{Binding CodewordsP3}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn
+                                            Width="*"
+                                            Binding="{Binding}"
+                                            Header="Palabra código" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Border>
+                        </Expander>
+
+                        <TextBlock Height="24" />
+                    </StackPanel>
+                </ScrollViewer>
             </Grid>
 
             <!--  ══════════════════════════════════════════ STATUS BAR  -->
