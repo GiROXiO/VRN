@@ -83,9 +83,7 @@ def calcular_caso(caso):
     r = g_poly.degree()
     k = n - r
 
-    h_poly_normal, _ = sp.div(poly_base, g_poly, domain=F2)
-    coefs_h = h_poly_normal.all_coeffs()[::-1]
-    h_poly = sp.Poly(coefs_h, x, domain=F2)
+    h_poly, _ = sp.div(poly_base, g_poly, domain=F2)
 
     G = construir_G(g_poly, n, k, F2)
     H = construir_H(h_poly, n, r, F2)

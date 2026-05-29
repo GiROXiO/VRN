@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VRN")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute(" ")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3a39cfc3f3399aecd8c42623e0a1637c41d5cc93")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+37492f58bb3799137592eb97ad9a14423bd15407")]
 [assembly: System.Reflection.AssemblyProductAttribute("VRN")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VRN")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
